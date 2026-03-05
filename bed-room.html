@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Bed Room | Online Furniture Store</title>
+    <meta name="description" content="Shop premium bedroom furniture at SOFA — beds, wardrobes, nightstands and more.">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="brand" style="text-decoration:none;">SOFA</a>
+        <ul class="nav-links">
+            <li><a href="living-room.html">Living Room</a></li>
+            <li><a href="bed-room.html" class="active">Bed Room</a></li>
+            <li><a href="dining-room.html">Dining Room</a></li>
+            <li><a href="office.html">Office</a></li>
+        </ul>
+        <div class="nav-icons">
+            <div class="search-wrap">
+                <input type="text" placeholder="Search...">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <a href="cart.html" class="cart-icon-wrap" title="View Cart">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <div class="category-hero" style="background-image: url('https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1400&q=80');">
+        <h1>Bed Room</h1>
+    </div>
+
+    <!-- COLLECTION THUMBNAILS -->
+    <div class="collection-row">
+        <p>Collection</p>
+        <img class="thumb" src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=200&q=70" alt="Collection 1">
+        <img class="thumb" src="https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=200&q=70" alt="Collection 2">
+        <img class="thumb" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=70" alt="Collection 3">
+        <img class="thumb" src="https://images.unsplash.com/photo-1588046130717-0eb0c9a3ba97?w=200&q=70" alt="Collection 4">
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <section class="product-section">
+        <div class="product-grid">
+
+            <div class="product-card" data-name="ARORA BED" data-price="₹25,000">
+                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=70" alt="Arora Bed">
+                <div class="card-body">
+                    <p class="card-name">ARORA</p>
+                    <p class="card-price">₹25,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="MATILDA BED" data-price="₹15,000">
+                <img src="https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=400&q=70" alt="Matilda Bed">
+                <div class="card-body">
+                    <p class="card-name">MATILDA</p>
+                    <p class="card-price">₹15,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="MAVEN BED" data-price="₹18,000">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&q=70" alt="Maven Bed">
+                <div class="card-body">
+                    <p class="card-name">MAVEN</p>
+                    <p class="card-price">₹18,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="NORDIC BED" data-price="₹15,000">
+                <img src="https://images.unsplash.com/photo-1588046130717-0eb0c9a3ba97?w=400&q=70" alt="Nordic Bed">
+                <div class="card-body">
+                    <p class="card-name">NORDIC</p>
+                    <p class="card-price">₹15,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="LUXE BED" data-price="₹21,000">
+                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&q=70" alt="Luxe Bed">
+                <div class="card-body">
+                    <p class="card-name">LUXE</p>
+                    <p class="card-price">₹21,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="URBAN BED" data-price="₹16,500">
+                <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=70" alt="Urban Bed">
+                <div class="card-body">
+                    <p class="card-name">URBAN</p>
+                    <p class="card-price">₹16,500</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="SERENE BED" data-price="₹19,500">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=70" alt="Serene Bed">
+                <div class="card-body">
+                    <p class="card-name">SERENE</p>
+                    <p class="card-price">₹19,500</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="ECLIPSE BED" data-price="₹14,000">
+                <img src="https://images.unsplash.com/photo-1598928636135-d146006ff4be?w=400&q=70" alt="Eclipse Bed">
+                <div class="card-body">
+                    <p class="card-name">ECLIPSE</p>
+                    <p class="card-price">₹14,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-copy">Copyrights @ 2022 Sofa Online</span>
+        <div class="footer-col">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="living-room.html">Living Room</a></li>
+                <li><a href="bed-room.html">Bed Room</a></li>
+                <li><a href="dining-room.html">Dining Room</a></li>
+                <li><a href="office.html">Office</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Care</h4>
+            <ul>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Terms &amp; Condition</a></li>
+                <li><a href="#">Policies</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="Twitter">t</a>
+            <a href="#" title="Google">G</a>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Login | Online Furniture Store</title>
+    <meta name="description" content="Sign in to your SOFA account to manage orders and wishlist.">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .msg { margin-top: 12px; text-align: center; font-size: 0.82rem; padding: 8px 12px; border-radius: 6px; display: none; }
+        .msg.error   { background: #fdecea; color: #c0392b; display: block; }
+        .msg.success { background: #eafaf1; color: #1e8449; display: block; }
+    </style>
+</head>
+<body class="auth-body">
+
+    <!-- Header -->
+    <header class="auth-header">
+        <a href="index.html" class="brand">SOFA</a>
+    </header>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <div class="auth-left-content">
+                <h2>New here ?</h2>
+                <p>Welcome to our websites,<br>please create new account</p>
+                <a href="signup.html" class="auth-switch-btn">Sign up</a>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right">
+            <div class="auth-form-box">
+                <h2>Sign in</h2>
+
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Username" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                </div>
+
+                <button class="auth-btn" type="button" onclick="handleLogin()">Log in</button>
+                <p id="login-msg" class="msg"></p>
+
+                <p class="social-divider">Or Sign in with social platforms</p>
+                <div class="social-icons">
+                    <a href="#" title="Facebook">f</a>
+                    <a href="#" title="Twitter">t</a>
+                    <a href="#" title="Google">G</a>
+                    <a href="#" title="GitHub">
+                        <ion-icon name="logo-github" style="font-size:0.95rem;"></ion-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Default demo account (works even if nobody signed up)
+        const DEFAULT_USER = 'admin';
+        const DEFAULT_PASS = 'admin123';
+
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('login-msg');
+
+            if (!username || !password) {
+                showMsg(msg, 'error', 'Please fill in both fields.');
+                return;
+            }
+
+            // Check saved account from sign-up first
+            const saved = JSON.parse(localStorage.getItem('sofa_user') || 'null');
+            const validUser = (saved && username === saved.username && password === saved.password)
+                           || (username === DEFAULT_USER && password === DEFAULT_PASS);
+
+            if (validUser) {
+                showMsg(msg, 'success', '✔ Login successful! Redirecting...');
+                localStorage.setItem('sofa_logged_in', username);
+                setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+            } else {
+                showMsg(msg, 'error', '✖ Incorrect username or password.');
+            }
+        }
+
+        function showMsg(el, type, text) {
+            el.className = 'msg ' + type;
+            el.textContent = text;
+        }
+
+        // Allow pressing Enter to submit
+        document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+    </script>
+</body>
+</html>

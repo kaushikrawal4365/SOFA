@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Dining Room | Online Furniture Store</title>
+    <meta name="description" content="Shop premium dining room furniture at SOFA — dining tables, chairs, sideboards and more.">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="brand" style="text-decoration:none;">SOFA</a>
+        <ul class="nav-links">
+            <li><a href="living-room.html">Living Room</a></li>
+            <li><a href="bed-room.html">Bed Room</a></li>
+            <li><a href="dining-room.html" class="active">Dining Room</a></li>
+            <li><a href="office.html">Office</a></li>
+        </ul>
+        <div class="nav-icons">
+            <div class="search-wrap">
+                <input type="text" placeholder="Search...">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <a href="cart.html" class="cart-icon-wrap" title="View Cart">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <div class="category-hero" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=80');">
+        <h1>Dining Room</h1>
+    </div>
+
+    <!-- COLLECTION THUMBNAILS -->
+    <div class="collection-row">
+        <p>Collection</p>
+        <img class="thumb" src="https://images.unsplash.com/photo-1513161455079-7dc1de15ef3e?w=200&q=70" alt="Collection 1">
+        <img class="thumb" src="https://images.unsplash.com/photo-1549488396-c0e66b0a0c2d?w=200&q=70" alt="Collection 2">
+        <img class="thumb" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=70" alt="Collection 3">
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <section class="product-section">
+        <div class="product-grid">
+
+            <div class="product-card" data-name="ARORA TABLE" data-price="₹75,000">
+                <img src="https://images.unsplash.com/photo-1513161455079-7dc1de15ef3e?w=400&q=70" alt="Arora Dining">
+                <div class="card-body">
+                    <p class="card-name">ARORA</p>
+                    <p class="card-price">₹75,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="MATILDA TABLE" data-price="₹15,000">
+                <img src="https://images.unsplash.com/photo-1549488396-c0e66b0a0c2d?w=400&q=70" alt="Matilda Dining">
+                <div class="card-body">
+                    <p class="card-name">MATILDA</p>
+                    <p class="card-price">₹15,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="MAVEN TABLE" data-price="₹18,000">
+                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70" alt="Maven Dining">
+                <div class="card-body">
+                    <p class="card-name">MAVEN</p>
+                    <p class="card-price">₹18,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="NORDIC TABLE" data-price="₹15,000">
+                <img src="https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=400&q=70" alt="Nordic Dining">
+                <div class="card-body">
+                    <p class="card-name">NORDIC</p>
+                    <p class="card-price">₹15,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="LUXE TABLE" data-price="₹29,000">
+                <img src="https://images.unsplash.com/photo-1531498681767-e5ef8f8b3b0d?w=400&q=70" alt="Luxe Dining">
+                <div class="card-body">
+                    <p class="card-name">LUXE</p>
+                    <p class="card-price">₹29,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="URBAN TABLE" data-price="₹22,000">
+                <img src="https://images.unsplash.com/photo-1551298370-9d3d53740c72?w=400&q=70" alt="Urban Dining">
+                <div class="card-body">
+                    <p class="card-name">URBAN</p>
+                    <p class="card-price">₹22,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="SERENE TABLE" data-price="₹35,000">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=70" alt="Serene Dining">
+                <div class="card-body">
+                    <p class="card-name">SERENE</p>
+                    <p class="card-price">₹35,000</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="ECLIPSE TABLE" data-price="₹17,500">
+                <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=70" alt="Eclipse Dining">
+                <div class="card-body">
+                    <p class="card-name">ECLIPSE</p>
+                    <p class="card-price">₹17,500</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-copy">Copyrights @ 2022 Sofa Online</span>
+        <div class="footer-col">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="living-room.html">Living Room</a></li>
+                <li><a href="bed-room.html">Bed Room</a></li>
+                <li><a href="dining-room.html">Dining Room</a></li>
+                <li><a href="office.html">Office</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Care</h4>
+            <ul>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Terms &amp; Condition</a></li>
+                <li><a href="#">Policies</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="Twitter">t</a>
+            <a href="#" title="Google">G</a>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>

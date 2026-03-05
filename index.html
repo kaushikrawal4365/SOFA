@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Home | Online Furniture Store</title>
+    <meta name="description" content="SOFA Online Furniture Store — Discover premium furniture for every room. Shop Living Room, Bed Room, Dining Room, and Office collections.">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body class="home-body">
+
+    <!-- ===== HEADER ===== -->
+    <header class="home-header">
+        <span class="brand">SOFA</span>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+        <div class="nav-icons" style="display:flex;gap:14px;align-items:center;">
+            <ion-icon name="search-outline" style="color:#fff;font-size:1.2rem;cursor:pointer;"></ion-icon>
+            <ion-icon name="person-circle-outline" style="color:#fff;font-size:1.2rem;cursor:pointer;"></ion-icon>
+            <a href="cart.html" class="cart-icon-wrap" title="View Cart" style="color:#fff;">
+                <ion-icon name="cart-outline" style="font-size:1.2rem;"></ion-icon>
+                <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="home-hero">
+        <div class="hero-content">
+            <p class="hero-sub">Premium Furniture</p>
+            <h1>With us, your home<br>will be live Art</h1>
+            <p>We are SOFA, a small but motivated company specialising in furniture. We believe personality in great bespoke and inspired pieces, which is why we commit ourselves to giving you the best in taste.</p>
+            <a href="products.html" class="explore-btn">Explore more</a>
+        </div>
+
+        <div class="hero-socials">
+            <ion-icon name="logo-facebook"></ion-icon>
+            <ion-icon name="logo-twitter"></ion-icon>
+            <ion-icon name="logo-tiktok"></ion-icon>
+            <ion-icon name="logo-youtube"></ion-icon>
+        </div>
+    </section>
+
+    <script src="cart.js"></script>
+</body>
+</html>

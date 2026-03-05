@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Cart | Online Furniture Store</title>
+    <meta name="description" content="Your SOFA shopping cart — review items and proceed to checkout.">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="brand" style="text-decoration:none;">SOFA</a>
+        <ul class="nav-links">
+            <li><a href="living-room.html">Living Room</a></li>
+            <li><a href="bed-room.html">Bed Room</a></li>
+            <li><a href="dining-room.html">Dining Room</a></li>
+            <li><a href="office.html">Office</a></li>
+        </ul>
+        <div class="nav-icons">
+            <div class="search-wrap">
+                <input type="text" placeholder="Search...">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <a href="cart.html" class="cart-icon-wrap" title="View Cart">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- CART PAGE CONTENT -->
+    <div class="cart-page">
+        <h1 class="cart-title">Your Cart</h1>
+        <div class="cart-layout">
+            <!-- Items list -->
+            <div class="cart-items" id="cart-items">
+                <!-- Rendered by JS -->
+            </div>
+            <!-- Order summary -->
+            <div class="cart-summary" id="cart-summary">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-copy">Copyrights @ 2022 Sofa Online</span>
+        <div class="footer-col">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="living-room.html">Living Room</a></li>
+                <li><a href="bed-room.html">Bed Room</a></li>
+                <li><a href="dining-room.html">Dining Room</a></li>
+                <li><a href="office.html">Office</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Care</h4>
+            <ul>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Terms &amp; Condition</a></li>
+                <li><a href="#">Policies</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="Twitter">t</a>
+            <a href="#" title="Google">G</a>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+    <script>
+        function renderCartPage() {
+            const cart = getCart();
+            const itemsEl   = document.getElementById('cart-items');
+            const summaryEl = document.getElementById('cart-summary');
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = `
+                    <div class="cart-empty">
+                        <span style="font-size:3rem;">🛒</span>
+                        <p>Your cart is empty.</p>
+                        <a href="products.html" class="continue-btn">Start Shopping</a>
+                    </div>`;
+                summaryEl.innerHTML = '';
+                return;
+            }
+
+            itemsEl.innerHTML = cart.map((item, i) => `
+                <div class="cart-row">
+                    <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <p class="cart-item-name">${item.name}</p>
+                        <p class="cart-item-price">${item.price}</p>
+                    </div>
+                    <div class="qty-control">
+                        <button onclick="updateQty(${i}, -1)">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="updateQty(${i}, +1)">+</button>
+                    </div>
+                    <p class="cart-item-subtotal">₹${(parseInt(item.price.replace(/[^\d]/g,'')) * item.qty).toLocaleString('en-IN')}</p>
+                    <button class="remove-btn" onclick="removeFromCart(${i})" title="Remove">✕</button>
+                </div>`).join('');
+
+            const total = getCartTotal();
+            const count = getCartCount();
+            summaryEl.innerHTML = `
+                <h3>Order Summary</h3>
+                <div class="summary-row"><span>Items (${count})</span><span>₹${total.toLocaleString('en-IN')}</span></div>
+                <div class="summary-row"><span>Delivery</span><span style="color:#27ae60;">Free</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total-row"><span>Total</span><span>₹${total.toLocaleString('en-IN')}</span></div>
+                <button class="checkout-btn" onclick="handleCheckout()">Proceed to Checkout</button>
+                <a href="products.html" class="continue-btn">Continue Shopping</a>
+                <button class="clear-btn" onclick="handleClear()">Clear Cart</button>`;
+        }
+
+        function handleCheckout() {
+            alert('✔ Order placed! Thank you for shopping with SOFA.\n\n(This is a demo — no real order was placed.)');
+            clearCart();
+            renderCartPage();
+        }
+
+        function handleClear() {
+            if (confirm('Remove all items from your cart?')) {
+                clearCart();
+                renderCartPage();
+            }
+        }
+
+        // Initial render
+        renderCartPage();
+    </script>
+</body>
+</html>
