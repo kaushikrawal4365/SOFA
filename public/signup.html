@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Sign Up</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="auth-page" style="direction:ltr;">
+    <!-- Left: form -->
+    <div class="auth-form-panel" style="order:1;">
+        <div class="auth-box">
+            <h2>Create account</h2>
+            <p class="sub">Join SOFA and start shopping premium furniture today.</p>
+
+            <p id="auth-msg" class="auth-msg"></p>
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Your full name" autocomplete="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="confirm">Confirm Password</label>
+                <input type="password" id="confirm" placeholder="Repeat password" autocomplete="new-password">
+            </div>
+
+            <button class="auth-submit" id="signup-btn" onclick="handleSignup()">Create Account</button>
+
+            <p class="auth-divider">Or sign up with</p>
+            <div class="social-btns">
+                <button class="social-btn">f</button>
+                <button class="social-btn">G</button>
+                <button class="social-btn">in</button>
+            </div>
+
+            <p class="auth-switch">Already have an account? <a href="/login.html">Log in</a></p>
+        </div>
+    </div>
+    <!-- Right: image -->
+    <div class="auth-image" style="order:2;">
+        <a href="/" class="auth-brand">SOFA</a>
+        <div class="auth-quote">
+            <h2>"Good design is as little design as possible"</h2>
+            <p>Discover furniture that defines your space.</p>
+        </div>
+    </div>
+</div>
+
+<script src="/app.js"></script>
+<script>
+if (isLoggedIn()) window.location.href = '/';
+
+async function handleSignup() {
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm').value;
+    const msg      = document.getElementById('auth-msg');
+    const btn      = document.getElementById('signup-btn');
+    msg.className  = 'auth-msg';
+
+    if (!name || !email || !password || !confirm) { showMsg(msg,'error','Please fill in all fields.'); return; }
+    if (password !== confirm)   { showMsg(msg,'error','Passwords do not match.'); return; }
+    if (password.length < 6)    { showMsg(msg,'error','Password must be at least 6 characters.'); return; }
+
+    btn.textContent = 'Creating account...'; btn.disabled = true;
+    try {
+        const data = await apiFetch('/api/auth/register', {
+            method:'POST', body: JSON.stringify({ name, email, password })
+        });
+        localStorage.setItem('sofa_token', data.token);
+        localStorage.setItem('sofa_user',  JSON.stringify(data.user));
+        showMsg(msg,'success','✔ Account created! Redirecting...');
+        setTimeout(() => window.location.href = '/', 1200);
+    } catch(e) {
+        showMsg(msg,'error','✖ ' + e.message);
+        btn.textContent = 'Create Account'; btn.disabled = false;
+    }
+}
+
+function showMsg(el, type, text) { el.className = 'auth-msg ' + type; el.textContent = text; }
+document.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignup(); });
+</script>
+</body>
+</html>

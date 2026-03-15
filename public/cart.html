@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Cart</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="brand">SOFA</a>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/products.html">Shop</a></li>
+    </ul>
+    <div class="nav-right">
+        <div id="nav-user"></div>
+        <a href="/cart.html" class="cart-icon-wrap" title="View Cart">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+        </a>
+    </div>
+</nav>
+
+<div class="cart-page">
+    <h1>Your Cart</h1>
+    <div id="cart-root"></div>
+</div>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>SOFA</h2>
+            <p>Premium furniture for every corner of your home.</p>
+        </div>
+        <div class="footer-col"><h4>Categories</h4>
+            <ul>
+                <li><a href="/products.html?category=living-room">Living Room</a></li>
+                <li><a href="/products.html?category=bed-room">Bed Room</a></li>
+                <li><a href="/products.html?category=dining-room">Dining Room</a></li>
+                <li><a href="/products.html?category=office">Office</a></li>
+            </ul>
+        </div>
+        <div class="footer-col"><h4>Support</h4>
+            <ul>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Returns</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">Copyrights © 2024 Sofa Online.</div>
+</footer>
+
+<script src="/app.js"></script>
+<script>
+function renderCart() {
+    const cart   = getCart();
+    const root   = document.getElementById('cart-root');
+
+    if (cart.length === 0) {
+        root.innerHTML = `
+            <div class="cart-empty">
+                <div class="empty-icon">🛒</div>
+                <p>Your cart is empty.</p>
+                <a href="/products.html" class="btn-primary" style="display:inline-block;">Start Shopping</a>
+            </div>`;
+        return;
+    }
+
+    const total = getCartTotal();
+    const count = getCartCount();
+
+    root.innerHTML = `
+        <div class="cart-layout">
+            <div class="cart-items">
+                ${cart.map((item,i) => `
+                <div class="cart-row">
+                    <img class="cart-img" src="${item.imageUrl}" alt="${item.name}">
+                    <div class="cart-info">
+                        <p class="cart-item-name">${item.name}</p>
+                        <p class="cart-item-cat">${item.category.replace('-',' ')}</p>
+                        <p class="cart-item-price">${formatPrice(item.price)} each</p>
+                    </div>
+                    <div class="qty-control">
+                        <button onclick="changeQty('${item._id}',-1)">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="changeQty('${item._id}',+1)">+</button>
+                    </div>
+                    <p class="cart-sub">${formatPrice(item.price * item.qty)}</p>
+                    <button class="cart-remove" onclick="removeItem('${item._id}')" title="Remove">✕</button>
+                </div>`).join('')}
+            </div>
+            <div class="cart-summary-box">
+                <h3>Order Summary</h3>
+                <div class="sum-row"><span>Items (${count})</span><span>${formatPrice(total)}</span></div>
+                <div class="sum-row"><span>Delivery</span><span style="color:#27ae60;">Free</span></div>
+                <hr class="sum-divider">
+                <div class="sum-row sum-total"><span>Total</span><span>${formatPrice(total)}</span></div>
+                <button class="checkout-btn" onclick="handleCheckout()">Proceed to Checkout</button>
+                <a href="/products.html" class="continue-link">Continue Shopping</a>
+                <button class="clear-cart-btn" onclick="handleClear()">Clear Cart</button>
+            </div>
+        </div>`;
+}
+
+function changeQty(id, delta) { updateQty(id, delta); renderCart(); }
+function removeItem(id)       { removeFromCart(id); renderCart(); }
+
+function handleCheckout() {
+    if (!isLoggedIn()) {
+        if (confirm('Please log in to checkout. Go to login page?')) window.location.href = '/login.html';
+        return;
+    }
+    alert('✔ Order placed! Thank you for shopping with SOFA.\n\n(Demo — no real order placed.)');
+    clearCart();
+    renderCart();
+}
+
+function handleClear() {
+    if (confirm('Remove all items from your cart?')) { clearCart(); renderCart(); }
+}
+
+renderCart();
+</script>
+</body>
+</html>

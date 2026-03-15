@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="brand">SOFA</a>
+    <ul class="nav-links">
+        <li><a href="/">Store</a></li>
+        <li><a href="/admin.html" class="active">Admin Dashboard</a></li>
+    </ul>
+    <div class="nav-right">
+        <div id="nav-user"></div>
+        <a href="/cart.html" class="cart-icon-wrap" title="View Cart">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+        </a>
+    </div>
+</nav>
+
+<div class="admin-page">
+    <h1>Product Management</h1>
+    <p class="admin-sub">Add, edit, and delete furniture products. Changes are live immediately.</p>
+
+    <div class="admin-layout">
+        <!-- Form Panel -->
+        <div class="admin-form-card">
+            <h3 id="form-title">Add New Product</h3>
+            <p id="admin-msg" class="admin-msg"></p>
+            <input type="hidden" id="edit-id">
+
+            <div class="form-group">
+                <label>Product Name *</label>
+                <input type="text" id="f-name" placeholder="e.g. ARORA Sofa">
+            </div>
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea id="f-desc" rows="3" placeholder="Product description..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Category *</label>
+                <select id="f-cat">
+                    <option value="">Select category</option>
+                    <option value="living-room">Living Room</option>
+                    <option value="bed-room">Bed Room</option>
+                    <option value="dining-room">Dining Room</option>
+                    <option value="office">Office</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sale Price (₹) *</label>
+                    <input type="number" id="f-price" placeholder="e.g. 15000" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Original Price (₹)</label>
+                    <input type="number" id="f-orig" placeholder="e.g. 20000" min="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Image URL *</label>
+                <input type="url" id="f-img" placeholder="https://...">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Badge</label>
+                    <select id="f-badge">
+                        <option value="">None</option>
+                        <option value="new">New</option>
+                        <option value="sale">Sale</option>
+                        <option value="bestseller">Bestseller</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rating (0–5)</label>
+                    <input type="number" id="f-rating" placeholder="4.5" min="0" max="5" step="0.1">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" id="f-stock" placeholder="50" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Review Count</label>
+                    <input type="number" id="f-reviews" placeholder="0" min="0">
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-bottom:14px;">
+                <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;">
+                    <input type="checkbox" id="f-featured"> Featured on Home
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;">
+                    <input type="checkbox" id="f-flash"> Flash Sale
+                </label>
+            </div>
+
+            <button class="admin-submit-btn" id="submit-btn" onclick="handleSubmit()">Add Product</button>
+            <button class="admin-cancel-btn" id="cancel-btn" onclick="resetForm()" style="display:none;">Cancel Edit</button>
+        </div>
+
+        <!-- Table Panel -->
+        <div class="admin-table-card">
+            <div class="admin-table-header">
+                <h3>All Products</h3>
+                <span class="admin-count" id="product-count">0 products</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Badge</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-tbody">
+                        <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/app.js"></script>
+<script>
+// Guard: redirect non-admins
+document.addEventListener('DOMContentLoaded', () => {
+    if (!isLoggedIn() || !isAdmin()) {
+        window.location.href = '/login.html';
+    }
+});
+
+let allProducts = [];
+
+async function loadProducts() {
+    try {
+        allProducts = await apiFetch('/api/products');
+        document.getElementById('product-count').textContent = allProducts.length + ' products';
+        renderTable(allProducts);
+    } catch(e) {
+        document.getElementById('products-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--red);padding:40px;">Could not load products.</td></tr>`;
+    }
+}
+
+function renderTable(products) {
+    const tbody = document.getElementById('products-tbody');
+    if (!products.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">No products yet. Add one!</td></tr>';
+        return;
+    }
+    tbody.innerHTML = products.map(p => `
+        <tr>
+            <td><img class="admin-thumb" src="${p.imageUrl}" alt="${p.name}"></td>
+            <td><strong style="font-size:0.85rem;">${p.name}</strong><br><span style="font-size:0.72rem;color:var(--text-light);">${p.description.substring(0,40)}...</span></td>
+            <td style="text-transform:capitalize;">${p.category.replace('-',' ')}</td>
+            <td>
+                <strong>₹${p.price.toLocaleString('en-IN')}</strong>
+                ${p.originalPrice ? `<br><span style="font-size:0.75rem;color:var(--text-light);text-decoration:line-through;">₹${p.originalPrice.toLocaleString('en-IN')}</span>` : ''}
+            </td>
+            <td>
+                <span class="admin-badge badge-${p.badge || 'none'}">${p.badge || 'none'}</span>
+            </td>
+            <td>⭐ ${p.rating.toFixed(1)}</td>
+            <td>
+                <button class="edit-btn" onclick='editProduct(${JSON.stringify(p)})'>Edit</button>
+                <button class="del-btn" onclick="deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}')">Delete</button>
+            </td>
+        </tr>`).join('');
+}
+
+async function handleSubmit() {
+    const id = document.getElementById('edit-id').value;
+    const msg = document.getElementById('admin-msg');
+    msg.className = 'admin-msg';
+
+    const body = {
+        name:          document.getElementById('f-name').value.trim(),
+        description:   document.getElementById('f-desc').value.trim(),
+        category:      document.getElementById('f-cat').value,
+        price:         parseFloat(document.getElementById('f-price').value) || 0,
+        originalPrice: parseFloat(document.getElementById('f-orig').value) || null,
+        imageUrl:      document.getElementById('f-img').value.trim(),
+        badge:         document.getElementById('f-badge').value || null,
+        rating:        parseFloat(document.getElementById('f-rating').value) || 4.5,
+        stock:         parseInt(document.getElementById('f-stock').value) || 50,
+        reviewCount:   parseInt(document.getElementById('f-reviews').value) || 0,
+        featured:      document.getElementById('f-featured').checked,
+        flashSale:     document.getElementById('f-flash').checked
+    };
+
+    if (!body.name || !body.description || !body.category || !body.price || !body.imageUrl) {
+        showMsg(msg,'error','Please fill in all required fields.'); return;
+    }
+
+    try {
+        if (id) {
+            await apiFetch(`/api/products/${id}`, { method:'PUT', body:JSON.stringify(body) });
+            showMsg(msg,'success','✔ Product updated!');
+        } else {
+            await apiFetch('/api/products', { method:'POST', body:JSON.stringify(body) });
+            showMsg(msg,'success','✔ Product added!');
+        }
+        resetForm();
+        loadProducts();
+    } catch(e) {
+        showMsg(msg,'error','✖ ' + e.message);
+    }
+}
+
+function editProduct(p) {
+    document.getElementById('form-title').textContent = 'Edit Product';
+    document.getElementById('submit-btn').textContent = 'Update Product';
+    document.getElementById('cancel-btn').style.display = 'block';
+    document.getElementById('edit-id').value = p._id;
+    document.getElementById('f-name').value    = p.name;
+    document.getElementById('f-desc').value    = p.description;
+    document.getElementById('f-cat').value     = p.category;
+    document.getElementById('f-price').value   = p.price;
+    document.getElementById('f-orig').value    = p.originalPrice || '';
+    document.getElementById('f-img').value     = p.imageUrl;
+    document.getElementById('f-badge').value   = p.badge || '';
+    document.getElementById('f-rating').value  = p.rating;
+    document.getElementById('f-stock').value   = p.stock;
+    document.getElementById('f-reviews').value = p.reviewCount;
+    document.getElementById('f-featured').checked = p.featured;
+    document.getElementById('f-flash').checked    = p.flashSale;
+    window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+async function deleteProduct(id, name) {
+    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    try {
+        await apiFetch(`/api/products/${id}`, { method:'DELETE' });
+        showToast(`"${name}" deleted`);
+        loadProducts();
+    } catch(e) { showToast('Delete failed: ' + e.message, 'error'); }
+}
+
+function resetForm() {
+    document.getElementById('form-title').textContent = 'Add New Product';
+    document.getElementById('submit-btn').textContent = 'Add Product';
+    document.getElementById('cancel-btn').style.display = 'none';
+    document.getElementById('edit-id').value = '';
+    ['f-name','f-desc','f-price','f-orig','f-img','f-rating','f-stock','f-reviews'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-cat').value   = '';
+    document.getElementById('f-badge').value = '';
+    document.getElementById('f-featured').checked = false;
+    document.getElementById('f-flash').checked    = false;
+    document.getElementById('admin-msg').className = 'admin-msg';
+}
+
+function showMsg(el, type, text) { el.className = 'admin-msg ' + type; el.textContent = text; }
+
+loadProducts();
+</script>
+</body>
+</html>

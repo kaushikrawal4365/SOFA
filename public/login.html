@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFA — Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="auth-page">
+    <!-- Left image panel -->
+    <div class="auth-image">
+        <a href="/" class="auth-brand">SOFA</a>
+        <div class="auth-quote">
+            <h2>"Make your home a reflection of your soul"</h2>
+            <p>Premium furniture for every corner of your life.</p>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-form-panel">
+        <div class="auth-box">
+            <h2>Welcome back</h2>
+            <p class="sub">Sign in to your account to continue shopping.</p>
+
+            <p id="auth-msg" class="auth-msg"></p>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Your password" autocomplete="current-password">
+            </div>
+
+            <button class="auth-submit" id="login-btn" onclick="handleLogin()">Log in</button>
+
+            <p class="auth-divider">Or sign in with</p>
+            <div class="social-btns">
+                <button class="social-btn">f</button>
+                <button class="social-btn">G</button>
+                <button class="social-btn">in</button>
+            </div>
+
+            <p class="auth-switch">Don't have an account? <a href="/signup.html">Sign up</a></p>
+            <p style="text-align:center;margin-top:14px;font-size:0.78rem;color:var(--text-light);">
+                Demo admin: <strong>admin@sofa.com</strong> / <strong>Admin@1234</strong>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="/app.js"></script>
+<script>
+// Redirect if already logged in
+if (isLoggedIn()) window.location.href = '/';
+
+async function handleLogin() {
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const msg      = document.getElementById('auth-msg');
+    const btn      = document.getElementById('login-btn');
+    msg.className  = 'auth-msg';
+
+    if (!email || !password) { showAuthMsg(msg, 'error', 'Please fill in all fields.'); return; }
+
+    btn.textContent = 'Signing in...'; btn.disabled = true;
+    try {
+        const data = await apiFetch('/api/auth/login', {
+            method:'POST', body: JSON.stringify({ email, password })
+        });
+        localStorage.setItem('sofa_token', data.token);
+        localStorage.setItem('sofa_user',  JSON.stringify(data.user));
+        showAuthMsg(msg, 'success', '✔ Login successful! Redirecting...');
+        setTimeout(() => window.location.href = data.user.role === 'admin' ? '/admin.html' : '/', 1000);
+    } catch(e) {
+        showAuthMsg(msg, 'error', '✖ ' + e.message);
+        btn.textContent = 'Log in'; btn.disabled = false;
+    }
+}
+
+function showAuthMsg(el, type, text) { el.className = 'auth-msg ' + type; el.textContent = text; }
+document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+</script>
+</body>
+</html>
